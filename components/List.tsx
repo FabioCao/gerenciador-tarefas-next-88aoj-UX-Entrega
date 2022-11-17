@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import moment from 'moment';
+import moment from 'moment-timezone';
 import type {NextPage} from 'next';
 import { useState } from 'react';
 import { Modal } from 'react-bootstrap';
@@ -36,7 +36,7 @@ export const List : NextPage<ListProps> = ({list, getFilteredList}) =>{
         setShowModal(true);
         setName(task.name);
         setId(task._id || '');
-        setPrevisionDate(moment(task.finishPrevisionDate).format('yyyy-MM-DD'));
+        setPrevisionDate(moment.tz(task.finishPrevisionDate,"UTC").format('yyyy-MM-DD'));
         setFinishDate('');
     }
 
@@ -123,9 +123,9 @@ export const List : NextPage<ListProps> = ({list, getFilteredList}) =>{
                                value={previsionDate} onChange={e => setPrevisionDate(e.target.value)}/>
                         <input
                             type="text" placeholder="Data de conclusão"
-                            value={finishDate} onChange={(e) => setFinishDate(e.target.value)}
-                            onFocus={(e) => (e.target.type = "date")}
-                            onBlur={(e) => (e.target.type = "text")}
+                            onFocus={e => (e.target.type = "date")}
+                            onBlur={e => (e.target.type = "text")}
+                            value={finishDate} onChange={e => setFinishDate(e.target.value)}
                         />
                 </Modal.Body>
                 <Modal.Footer>
